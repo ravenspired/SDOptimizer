@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import argparse
 import imutils
 import cv2
+import numpy
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True,
@@ -68,4 +69,9 @@ plt.figure()
 plt.axis("off")
 plt.imshow(imutils.opencv2matplotlib(image))
 # show our plots
+print("mean",numpy.mean(hist))
+if (numpy.mean(hist)<=2000):
+	print("this image appears to be underexposed.")
+if (numpy.mean(hist)>=3000):
+	print("this image appears to be properly exposed.")
 plt.show()
