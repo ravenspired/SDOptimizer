@@ -82,7 +82,7 @@ print("Test 1: Exposure")
 print("Please wait, running benchmarks...")
 start = time.time()
 for i in range(30):
-	if exposureBenchmark("/Users/anton/Desktop/SDOptimizer/sample.JPG"):
+	if exposureBenchmark("sample.JPG"):
 		pass
 end = time.time()
 speed = (end-start)/30
