@@ -6,6 +6,7 @@ import numpy
 import os
 
 from exposure import *
+from fileOperations import *
 
 
 ap = argparse.ArgumentParser()
@@ -14,6 +15,12 @@ ap.add_argument("-r", "--directory", required=True,
 SDdir = vars(ap.parse_args())["directory"]
 
 
+try:
+	jobFile = open("CANON_DC.sdoptimizer", "x")
+except:
+	print("job file already exists.")
+
+jobFile = open("CANON_DC.sdoptimizer", "a")
 
 
 
@@ -47,10 +54,17 @@ for image in images:
 	filesRemaining -= 1
 	if(exposureTest(image)):
 		pass
-		# print("pass")
+		print("pass")
 	else:
-		# print("fail")
-		pass
+		jobFile.write(image+"\n")
+		
+jobFile.close()
+
+purgePhotos()	
+
+f = open("CANON_DC.sdoptimizer", "r")
+todel = f.read()
+imagesToDelete = todel.splitlines()
 
 
 
