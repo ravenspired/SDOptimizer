@@ -51,11 +51,11 @@ def getNumberOfFiles(filesArray):
 
 def purgePhotos():
 
-	f = open("CANON_DC.sdoptimizer", "r")
+	f = open("CANON_DC.log", "r")
 	todel = f.read()
 	imagesToDelete = todel.splitlines()
 	for image in imagesToDelete:
 		send2trash(image)
 
 	f.close()
-	send2trash("CANON_DC.sdoptimizer")
+	send2trash("CANON_DC.log")

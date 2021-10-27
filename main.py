@@ -16,11 +16,12 @@ SDdir = vars(ap.parse_args())["directory"]
 
 
 try:
-	jobFile = open("CANON_DC.sdoptimizer", "x")
+	jobFile = open("CANON_DC.log", "x")
+	print("file created.")
 except:
 	print("job file already exists.")
 
-jobFile = open("CANON_DC.sdoptimizer", "a")
+jobFile = open("CANON_DC.log", "a")
 
 
 
@@ -29,9 +30,9 @@ print("SDOptimizer v1")
 print("Test 1: Exposure")
 
 
-# print("Please wait, running benchmarks...")
-# speed = benchmarkExposure()
-# print("Benchmarking completed. Speed is roughly ", 1/speed, "images/sec")		
+print("Please wait, running benchmarks...")
+speed = benchmarkExposure()
+print("Benchmarking completed. Speed is roughly ", 1/speed, "images/sec")		
 
 
 
@@ -39,32 +40,34 @@ print("Test 1: Exposure")
 
 #print("Exposure task is estimated to take ", int(exposureTaskPredictionDir(speed)), " seconds.")
 print("Please wait, indexing files...")
-time.sleep(1)
-
-
-
-
 images = omitFileExtensions(indexFiles(SDdir))
 filesRemaining = getNumberOfFiles(images)
 
 
+print("Beginning processing.")
+
+imagesProcessed = 0
 
 for image in images:
-	print(filesRemaining," photos left.")
+	if filesRemaining%5==0:
+		print(filesRemaining," photos left, ", speed*filesRemaining, " seconds left.")
+
 	filesRemaining -= 1
 	if(exposureTest(image)):
 		pass
-		print("pass")
+
 	else:
+		imagesProcessed += 1
 		jobFile.write(image+"\n")
 		
 jobFile.close()
 
 purgePhotos()	
 
-f = open("CANON_DC.sdoptimizer", "r")
-todel = f.read()
-imagesToDelete = todel.splitlines()
+if imagesProcessed != 0:
+	f = open("CANON_DC.log", "r")
+	todel = f.read()
+	imagesToDelete = todel.splitlines()
 
-
+# send2trash("CANON_DC.log")
 
