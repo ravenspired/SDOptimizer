@@ -61,13 +61,8 @@ for image in images:
 		jobFile.write(image+"\n")
 		
 jobFile.close()
-
-purgePhotos()	
-
 if imagesProcessed != 0:
-	f = open("CANON_DC.log", "r")
-	todel = f.read()
-	imagesToDelete = todel.splitlines()
+	purgePhotos()	
+send2trash("CANON_DC.log")
 
-# send2trash("CANON_DC.log")
 

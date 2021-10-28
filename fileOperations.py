@@ -54,8 +54,12 @@ def purgePhotos():
 	f = open("CANON_DC.log", "r")
 	todel = f.read()
 	imagesToDelete = todel.splitlines()
+
 	for image in imagesToDelete:
+		# print("deleting: "+image)
 		send2trash(image)
 
+
+
 	f.close()
-	send2trash("CANON_DC.log")
+
