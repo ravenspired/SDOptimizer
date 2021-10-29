@@ -56,7 +56,7 @@ def purgePhotos():
 	imagesToDelete = todel.splitlines()
 
 	for image in imagesToDelete:
-		# print("deleting: "+image)
+		print("Deleting: "+image)
 		send2trash(image)
 
 

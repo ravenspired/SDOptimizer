@@ -4,6 +4,8 @@ import argparse
 import cv2
 import numpy
 import os
+from tqdm import tqdm
+
 
 from exposure import *
 from fileOperations import *
@@ -44,13 +46,13 @@ images = omitFileExtensions(indexFiles(SDdir))
 filesRemaining = getNumberOfFiles(images)
 
 
-print("Beginning processing.")
+print("Processing Images, please wait...")
 
 imagesProcessed = 0
 
-for image in images:
-	if filesRemaining%5==0:
-		print(filesRemaining," photos left, ", speed*filesRemaining, " seconds left.")
+for image in tqdm(images):
+	# if filesRemaining%5==0:
+	# 	print(filesRemaining," photos left, ", speed*filesRemaining, " seconds left.")
 
 	filesRemaining -= 1
 	if(exposureTest(image)):
@@ -61,6 +63,7 @@ for image in images:
 		jobFile.write(image+"\n")
 		
 jobFile.close()
+print("Scanning Completed. Moving ",imagesProcessed, "images to the trash.")
 if imagesProcessed != 0:
 	purgePhotos()	
 send2trash("CANON_DC.log")
