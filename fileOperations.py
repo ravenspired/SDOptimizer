@@ -3,8 +3,7 @@ import time
 import cv2
 import numpy
 from send2trash import send2trash
-
-
+from tqdm import tqdm
 
 
 
@@ -17,6 +16,9 @@ def indexFiles(path):
 		subFolders.remove(".DS_Store") #for macOS
 	except:
 		pass
+	rawWarned = False
+
+	
 
 	for folder in range(len(subFolders)):
 		workingDirectory = subFolders[folder]
@@ -24,13 +26,39 @@ def indexFiles(path):
 		imagePath = os.listdir(path+"/DCIM/"+workingDirectory+"")
 		try:
 			imagePath.remove(".DS_Store")
-			#insert interrupt for files other than jpegs
 		except:
 			pass
 
+
 		for picture in range(len(imagePath)):
-			imagePaths.append(path+"/DCIM/"+workingDirectory+"/"+imagePath[picture])
+			if ((imagePath[picture])[-4:] == ".CR2") and not rawWarned:
+				warnAboutRAW()
+				rawWarned = True
+			if ((imagePath[picture])[-4:] == ".JPG"):
+				imagePaths.append(path+"/DCIM/"+workingDirectory+"/"+imagePath[picture])
+			else:
+				pass
+
+
+			
 	return imagePaths
+
+
+
+def warnAboutRAW():
+	print("\n")
+	print("\n")
+	print("\n")
+	print("*****************")
+	print("Warning! RAW files have been found on the selected SD card. The program currently does not support checking RAW files.")
+	print("If a JPEG is flagged for removal then the RAW files associated with it will be removed as well.")
+	print("A future release will scan RAW files as well, but for the time being please shoot in JPEG+RAW mode on the camera.")
+	print("*****************")
+	print("\n")
+	print("\n")
+	print("\n")
+	time.sleep(10)
+
 
 def omitFileExtensions(pathArray):
 	imageCount = 0
@@ -54,10 +82,25 @@ def purgePhotos():
 	f = open("CANON_DC.log", "r")
 	todel = f.read()
 	imagesToDelete = todel.splitlines()
+	print("Deleting flagged pictures...")
+	time.sleep(1)
 
-	for image in imagesToDelete:
-		print("Deleting: "+image)
+	for image in tqdm(imagesToDelete):
+
 		send2trash(image)
+	time.sleep(2)
+	print("\n")
+	print("\n")
+
+	print("Checking for RAW files and deleting them...")
+	for raw in tqdm(imagesToDelete):
+		try:
+			send2trash(raw[:len(raw)-4]+".CR2")
+		except:
+			pass
+
+	time.sleep(2)
+
 
 
 
