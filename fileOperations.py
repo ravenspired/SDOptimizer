@@ -34,7 +34,7 @@ def indexFiles(path):
 			if ((imagePath[picture])[-4:] == ".CR2") and not rawWarned:
 				warnAboutRAW()
 				rawWarned = True
-			if ((imagePath[picture])[-4:] == ".JPG"):
+			if (imagePath[picture])[-4:] == ".JPG" or (imagePath[picture])[-4:] == ".jpg":
 				imagePaths.append(path+"/DCIM/"+workingDirectory+"/"+imagePath[picture])
 			else:
 				pass
@@ -63,9 +63,9 @@ def warnAboutRAW():
 def omitFileExtensions(pathArray):
 	imageCount = 0
 	for path in pathArray:
-		if(path[-4:] == ".JPG"):
+		if(path[-4:] == ".JPG" or path[-4:] == ".jpg"):
 			imageCount += 1
-		if(path[-4:] != ".JPG"):
+		if(path[-4:] != ".JPG" and path[-4:] != ".jpg"):
 			#ignore non jpeg files
 			pathArray.remove(path)
 	return pathArray
