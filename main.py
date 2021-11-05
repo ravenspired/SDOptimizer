@@ -111,6 +111,7 @@ if imagesProcessed != 0:
 send2trash("CANON_DC.log")
 print("\n")
 print("\n")
+print("\n")
 print("Job completed. Make sure to view what was removed in your system trash.")
 print("Do not forget to empty the trash as well.")
 print("Exiting. Thank you for using SDOptimizer!")
