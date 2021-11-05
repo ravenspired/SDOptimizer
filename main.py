@@ -9,12 +9,19 @@ from tqdm import tqdm
 
 from exposure import *
 from fileOperations import *
+from motion_blur import *
+
 
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-r", "--directory", required=False,
 	help="Directory of SD Card")
+ap.add_argument("-t", "--threshold", type=float, default=50.0,
+	help="focus measures that fall below this value will be considered 'blurry'")
+
 SDdir = vars(ap.parse_args())["directory"]
+blurThreshold =  vars(ap.parse_args())["threshold"]
+
 
 if(SDdir == None):
 	print("Please drag and drop your SD card onto the console, and press enter.")
@@ -37,7 +44,7 @@ jobFile = open("CANON_DC.log", "a")
 
 print("\n")
 
-print("SDOptimizer v1")
+print("SDOptimizer v1.1")
 
 
 print("\n")
@@ -57,6 +64,9 @@ filesRemaining = getNumberOfFiles(images)
 print("Processing Images, please wait...")
 
 imagesProcessed = 0
+imagesDestroyed = []
+
+print("Test 1: Exposure")
 
 for image in tqdm(images):
 	# if filesRemaining%5==0:
@@ -69,7 +79,28 @@ for image in tqdm(images):
 	else:
 		imagesProcessed += 1
 		jobFile.write(image+"\n")
+		imagesDestroyed.append(image)
+
 		
+
+
+
+print("Test 2: Motion Blur")
+for image in tqdm(images):
+	if image in imagesDestroyed:
+		pass
+	else:
+		filesRemaining -= 1
+		if(motionBlurTest(image, blurThreshold)):
+
+			pass
+		else:
+			imagesProcessed += 1
+
+			jobFile.write(image+"\n")
+			imagesDestroyed.append(image)
+
+
 jobFile.close()
 print("\n")
 print("\n")
