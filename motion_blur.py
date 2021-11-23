@@ -3,7 +3,7 @@ import cv2
 
 
 
-print("Motion Blur Imported.")
+
 
 
 def variance_of_laplacian(image):

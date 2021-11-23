@@ -6,7 +6,7 @@ from send2trash import send2trash
 from tqdm import tqdm
 
 
-print("File Operations Imported.")
+
 
 
 def indexFiles(path):

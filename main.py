@@ -11,6 +11,14 @@ from exposure import *
 from fileOperations import *
 from motion_blur import *
 
+from console_resources import *
+
+
+
+
+
+
+consoleSetup(True, True, True, True) 
 
 
 ap = argparse.ArgumentParser()
@@ -33,18 +41,18 @@ if(SDdir == None):
 
 try:
 	jobFile = open("CANON_DC.log", "x")
-	print("Jobfile created.")
+	console("Jobfile created.", "ok")
 except:
 	os.remove("CANON_DC.log")
 	jobFile = open("CANON_DC.log", "x")
-	print("Jobfile already exists. Overwriting...")
+	console("Jobfile already exists. Overwriting...", "warning")
 
 
 jobFile = open("CANON_DC.log", "a")
 
 print("\n")
 
-print("SDOptimizer v1.1")
+console("SDOptimizer v1.1", "info")
 
 
 print("\n")
@@ -56,17 +64,17 @@ print("\n")
 
 
 #print("Exposure task is estimated to take ", int(exposureTaskPredictionDir(speed)), " seconds.")
-print("Please wait, indexing files...")
+console("Please wait, indexing files...", "info")
 images = omitFileExtensions(indexFiles(SDdir))
 filesRemaining = getNumberOfFiles(images)
+console("Files indexed succesfully.", "ok")
 
-
-print("Processing Images, please wait...")
+console("Processing Images, please wait...", "info")
 
 imagesProcessed = 0
 imagesDestroyed = []
 
-print("Test 1: Exposure")
+console("Test 1: Exposure", "info")
 
 for image in tqdm(images):
 	# if filesRemaining%5==0:
@@ -83,9 +91,9 @@ for image in tqdm(images):
 
 		
 
+console("Test 1 completed.", "ok")
 
-
-print("Test 2: Motion Blur")
+console("Test 2: Motion Blur", "info")
 for image in tqdm(images):
 	if image in imagesDestroyed:
 		pass
@@ -102,18 +110,14 @@ for image in tqdm(images):
 
 
 jobFile.close()
-print("\n")
-print("\n")
-print("Scanning Completed. Moving ",imagesProcessed, "images to the trash.")
+
+console("Scanning completed. Purging images...", "info")
 print("\n")
 if imagesProcessed != 0:
 	purgePhotos()	
 send2trash("CANON_DC.log")
-print("\n")
-print("\n")
-print("\n")
-print("Job completed. Make sure to view what was removed in your system trash.")
-print("Do not forget to empty the trash as well.")
-print("Exiting. Thank you for using SDOptimizer!")
+console("Job completed. Make sure to view what was removed in your system trash.", "ok")
+console("Do not forget to empty the trash as well.", "info")
+console("Exiting. Thank you for using SDOptimizer!", "info")
 
 

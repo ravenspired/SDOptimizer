@@ -5,7 +5,7 @@ import numpy
 import os
 
 
-print("Exposure Imported.")
+
 
 
 def exposureBenchmark(imageDir):
